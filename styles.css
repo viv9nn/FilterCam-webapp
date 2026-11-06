@@ -1,0 +1,176 @@
+:root {
+  --pink: #ff2d55;
+  --blue: #0a84ff;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  color: #fff;
+  font-family: var(--font);
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app { position: fixed; inset: 0; }
+
+.screen { position: absolute; inset: 0; overflow: hidden; }
+[hidden] { display: none !important; }
+
+/* ---------- Permission / error screen ---------- */
+
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  text-align: center;
+  background: #1c1c1e;
+}
+.message-icon { width: 64px; height: 64px; color: #8e8e93; }
+.message h1 { margin: 8px 0 0; font-size: 24px; }
+.message p { margin: 0 0 12px; max-width: 32em; color: #aeaeb2; line-height: 1.4; }
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  font: 600 17px var(--font);
+  padding: 14px 22px;
+  border: none;
+  border-radius: 14px;
+  background: rgba(10, 132, 255, 0.15);
+  color: var(--blue);
+  cursor: pointer;
+}
+.btn.prominent { background: var(--blue); color: #fff; }
+.btn:active { opacity: 0.7; }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 600 17px var(--font);
+  padding: 8px 16px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+.pill svg { width: 18px; height: 18px; }
+button.pill { cursor: pointer; }
+button.pill[aria-pressed="true"] { background: var(--pink); }
+button:disabled { cursor: default; }
+button.pill:disabled { opacity: 0.6; }
+
+/* ---------- Booth ---------- */
+
+#preview, #mosh {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+#preview {
+  object-fit: cover;
+  transform: scaleX(-1); /* mirror, like a selfie camera */
+}
+#mosh { cursor: pointer; }
+
+.booth-ui {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 32px);
+  pointer-events: none; /* let taps through to the mosh canvas */
+}
+.booth-ui > * { pointer-events: auto; }
+.top-bar { align-self: stretch; display: flex; justify-content: flex-end; }
+.spacer { flex: 1; pointer-events: none; }
+
+.shutter {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  background: #fff;
+  background-clip: content-box;
+  padding: 6px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.shutter:active { transform: scale(0.94); }
+.shutter:disabled { opacity: 0.4; }
+
+.countdown {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 160px var(--font);
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+.countdown.pop { animation: pop 0.35s ease-out; }
+@keyframes pop {
+  from { transform: scale(1.6); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Result ---------- */
+
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 16px);
+  background: #f2f2f7;
+}
+.result img {
+  flex: 1;
+  min-height: 0;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+.actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+.toast {
+  position: absolute;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + 100px);
+  transform: translateX(-50%);
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; }
+
+@media (prefers-color-scheme: dark) {
+  .result { background: #000; }
+}
